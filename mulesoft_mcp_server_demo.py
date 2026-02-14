@@ -1529,8 +1529,8 @@ if __name__ == "__main__":
     print(f"🌐 Starting MCP Server on port {port}")
     print(f"📡 Transport: SSE (Server-Sent Events)")
     print(f"🔗 Connect from Amethyst Studio or other MCP clients")
-    print(f"   URL: http://0.0.0.0:{port}/sse")
+    print(f"   URL: http://0.0.0.0:{port}/mcp")
     print("")
     
     # Run with SSE transport for remote access
-    mcp.run(transport="sse", port=port, host="0.0.0.0")
+    mcp.run(transport="streamable-http", port=port, host="0.0.0.0")
