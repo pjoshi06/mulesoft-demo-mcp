@@ -1014,7 +1014,7 @@ def diagnose_cards_sca_issue(environment: str = "Production") -> str:
                     "debit": 45,
                     "credit": 38,
                     "total": 83,
-                    "last30min": true
+                    "last30min": True
                 },
                 "rateLimiting": {
                     "remaining": 24,
@@ -1145,12 +1145,12 @@ def diagnose_cards_sca_issue(environment: str = "Production") -> str:
                 "scenario1": {
                     "condition": "Spike occurs and resolves",
                     "action": "Create P3 to analyze what happened",
-                    "preventive": true
+                    "preventive": True
                 },
                 "scenario2": {
                     "condition": "Errors continuously coming",
                     "action": "Create P3 to quickly investigate",
-                    "reactive": true,
+                    "reactive": True,
                     "current": "THIS SCENARIO - ERRORS ONGOING"
                 }
             },
@@ -1522,5 +1522,15 @@ if __name__ == "__main__":
     print("=" * 70)
     print("")
     
-    # Run the MCP server
-    mcp.run()
+    # Run the MCP server with SSE transport for remote access
+    # Render and other cloud platforms set PORT environment variable
+    port = int(os.getenv("PORT", 8000))
+    
+    print(f"🌐 Starting MCP Server on port {port}")
+    print(f"📡 Transport: SSE (Server-Sent Events)")
+    print(f"🔗 Connect from Amethyst Studio or other MCP clients")
+    print(f"   URL: http://0.0.0.0:{port}/sse")
+    print("")
+    
+    # Run with SSE transport for remote access
+    mcp.run(transport="sse", port=port, host="0.0.0.0")
