@@ -1523,4 +1523,4 @@ if __name__ == "__main__":
     print("")
     
     # Run the MCP server
-    mcp.run(transport="streamable-http")
+    mcp.run()
