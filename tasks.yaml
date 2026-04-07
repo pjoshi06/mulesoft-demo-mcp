@@ -1,0 +1,91 @@
+incident_triage_task:
+  description: >
+    A new CDP incident has been reported.
+    Incident ID: {incident_id}
+    Incident Details: {incident_details}
+
+    Your job:
+    1. Acknowledge the incident and confirm scope and urgency
+    2. Identify which CDP PC component is likely affected —
+       Data Lake, Data Hub, FreeIPA, or Management Console
+    3. Determine business impact — which teams or pipelines affected
+    4. Assign priority — P1, P2, or P3 — with clear reasoning
+    5. Prepare a structured brief for the CDP Specialist to begin diagnosis
+
+    Do not diagnose root cause. Do not access any systems.
+  expected_output: >
+    A structured triage report with:
+    - Incident ID and timestamp
+    - Affected CDP component
+    - Priority level with reasoning
+    - Business impact summary
+    - Scope — isolated or broader
+    - Open questions for CDP Specialist
+    - Stakeholders to keep informed
+  agent: incident_manager
+
+cdp_diagnostic_task:
+  description: >
+    You have received a triage brief for incident {incident_id}.
+    Incident Details: {incident_details}
+
+    Run diagnostics in this order:
+    1. list_environments — confirm environment status
+    2. list_datalakes — check Data Lake health
+    3. list_datahubs — identify affected Data Hub cluster
+    4. describe_datahub — get cluster detail and node health
+    5. get_datahub_diagnostics — get issues and metrics
+    6. get_datalake_log_descriptors — if Data Lake is involved
+
+    Then identify root cause and produce 1 to 3 remediation options.
+
+    IMPORTANT: CDP Public Cloud on AWS only.
+    Do not apply on-premises CDH or HDP knowledge.
+    Do not execute any remediation. Findings for human review only.
+  expected_output: >
+    A structured diagnostic report with:
+    - Incident ID
+    - Each diagnostic step with tool used, finding, and significance
+    - Root cause analysis with evidence
+    - 1 to 3 remediation options each with:
+        * What it does and why it fixes the issue
+        * Risk level: Low / Medium / High
+        * Estimated downtime or impact
+        * Rollback plan
+    - Recommended option with reasoning
+    - Actions requiring human approval before execution
+  agent: cdp_specialist
+
+incident_summary_task:
+  description: >
+    The CDP Specialist has completed diagnostics for {incident_id}.
+
+    Your job:
+    1. Review the full diagnostic report from the CDP Specialist
+    2. Translate technical findings into a clear business-friendly summary
+    3. Present remediation options in plain language
+    4. State clearly what human approval is needed and from whom
+    5. Prepare the stakeholder update
+
+    Do not modify technical recommendations.
+    Do not make the remediation decision.
+    Present options and wait for human approval.
+  expected_output: >
+    Two sections:
+
+    1. STAKEHOLDER SUMMARY:
+       - Incident ID and current status
+       - What happened in business terms
+       - Who is affected and how
+       - Root cause in plain language
+       - Remediation options explained simply
+       - Decision needed from leadership
+       - Expected timeline after decision
+
+    2. APPROVAL REQUEST:
+       - Recommended option from CDP Specialist
+       - Risk of proceeding
+       - Risk of not proceeding
+       - Explicit gate: "Awaiting human approval to proceed with Option X"
+       - Named approver role
+  agent: incident_manager
